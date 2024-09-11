@@ -1969,7 +1969,19 @@ export async function copyTracedFiles(
           copiedFiles.add(fileOutputPath)
 
           await fs.mkdir(path.dirname(fileOutputPath), { recursive: true })
-          await fs.copyFile(tracedFilePath, fileOutputPath)
+          const symlink = await fs.readlink(tracedFilePath).catch(() => null)
+
+          if (symlink) {
+            try {
+              await fs.symlink(symlink, fileOutputPath)
+            } catch (e: any) {
+              if (e.code !== 'EEXIST') {
+                throw e
+              }
+            }
+          } else {
+            await fs.copyFile(tracedFilePath, fileOutputPath)
+          }
         }
 
         await copySema.release()

@@ -1393,7 +1393,18 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                 await _fs.promises.mkdir(_path.default.dirname(fileOutputPath), {
                     recursive: true
                 });
-                await _fs.promises.copyFile(tracedFilePath, fileOutputPath);
+                const symlink = await _fs.promises.readlink(tracedFilePath).catch(()=>null);
+                if (symlink) {
+                    try {
+                        await _fs.promises.symlink(symlink, fileOutputPath);
+                    } catch (e) {
+                        if (e.code !== "EEXIST") {
+                            throw e;
+                        }
+                    }
+                } else {
+                    await _fs.promises.copyFile(tracedFilePath, fileOutputPath);
+                }
             }
             await copySema.release();
         }));
