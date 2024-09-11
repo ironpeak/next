@@ -1213,6 +1213,7 @@ export async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, traci
                 const symlink = await fs.readlink(tracedFilePath).catch(()=>null);
                 if (symlink) {
                     try {
+                        console.log(`Symlinking ${fileOutputPath} -> ${symlink}`);
                         await fs.symlink(symlink, fileOutputPath);
                     } catch (e) {
                         if (e.code !== "EEXIST") {
@@ -1220,6 +1221,7 @@ export async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, traci
                         }
                     }
                 } else {
+                    console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`);
                     await fs.copyFile(tracedFilePath, fileOutputPath);
                 }
             }
@@ -1234,6 +1236,7 @@ export async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, traci
             await fs.mkdir(path.dirname(fileOutputPath), {
                 recursive: true
             });
+            console.log(`Copying ${originalPath} -> ${fileOutputPath}`);
             await fs.copyFile(originalPath, fileOutputPath);
         }
         await Promise.all([

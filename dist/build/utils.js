@@ -1396,6 +1396,7 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                 const symlink = await _fs.promises.readlink(tracedFilePath).catch(()=>null);
                 if (symlink) {
                     try {
+                        console.log(`Symlinking ${fileOutputPath} -> ${symlink}`);
                         await _fs.promises.symlink(symlink, fileOutputPath);
                     } catch (e) {
                         if (e.code !== "EEXIST") {
@@ -1403,6 +1404,7 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                         }
                     }
                 } else {
+                    console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`);
                     await _fs.promises.copyFile(tracedFilePath, fileOutputPath);
                 }
             }
@@ -1417,6 +1419,7 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
             await _fs.promises.mkdir(_path.default.dirname(fileOutputPath), {
                 recursive: true
             });
+            console.log(`Copying ${originalPath} -> ${fileOutputPath}`);
             await _fs.promises.copyFile(originalPath, fileOutputPath);
         }
         await Promise.all([

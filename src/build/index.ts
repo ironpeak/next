@@ -476,6 +476,7 @@ async function writeStandaloneDirectory(
         await fs.mkdir(path.dirname(outputPath), {
           recursive: true,
         })
+        console.log(`Copying ${filePath} -> ${outputPath}`)
         await fs.copyFile(filePath, outputPath)
       }
       await recursiveCopy(
@@ -3023,6 +3024,7 @@ export default async function build(
                   .replace(/\\/g, '/')
 
                 if (existsSync(orig)) {
+                  console.log(`Copying ${orig} -> ${path.join(distDir, 'server', updatedRelativeDest)}`)
                   await fs.copyFile(
                     orig,
                     path.join(distDir, 'server', updatedRelativeDest)

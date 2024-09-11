@@ -1973,6 +1973,7 @@ export async function copyTracedFiles(
 
           if (symlink) {
             try {
+              console.log(`Symlinking ${fileOutputPath} -> ${symlink}`)
               await fs.symlink(symlink, fileOutputPath)
             } catch (e: any) {
               if (e.code !== 'EEXIST') {
@@ -1980,6 +1981,7 @@ export async function copyTracedFiles(
               }
             }
           } else {
+            console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`)
             await fs.copyFile(tracedFilePath, fileOutputPath)
           }
         }
@@ -1998,6 +2000,7 @@ export async function copyTracedFiles(
         file
       )
       await fs.mkdir(path.dirname(fileOutputPath), { recursive: true })
+      console.log(`Copying ${originalPath} -> ${fileOutputPath}`)
       await fs.copyFile(originalPath, fileOutputPath)
     }
     await Promise.all([

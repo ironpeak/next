@@ -173,6 +173,7 @@ async function writeStandaloneDirectory(nextBuildSpan, distDir, pageKeys, denorm
             await fs.mkdir(path.dirname(outputPath), {
                 recursive: true
             });
+            console.log(`Copying ${filePath} -> ${outputPath}`);
             await fs.copyFile(filePath, outputPath);
         }
         await recursiveCopy(path.join(distDir, SERVER_DIRECTORY, "pages"), path.join(distDir, STANDALONE_DIRECTORY, path.relative(outputFileTracingRoot, distDir), SERVER_DIRECTORY, "pages"), {
@@ -1834,6 +1835,7 @@ export default async function build(dir, reactProductionProfiling = false, debug
                             const orig = path.join(distDir, "server", "app", "_not-found.html");
                             const updatedRelativeDest = path.join("pages", "404.html").replace(/\\/g, "/");
                             if (existsSync(orig)) {
+                                console.log(`Copying ${orig} -> ${path.join(distDir, "server", updatedRelativeDest)}`);
                                 await fs.copyFile(orig, path.join(distDir, "server", updatedRelativeDest));
                                 pagesManifest["/404"] = updatedRelativeDest;
                             }
