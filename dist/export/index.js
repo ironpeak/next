@@ -27,6 +27,7 @@ _export(exports, {
 const _picocolors = require("../lib/picocolors");
 const _findup = /*#__PURE__*/ _interop_require_default(require("next/dist/compiled/find-up"));
 const _fs = require("fs");
+const _nodefs = require("node:fs");
 require("../server/require-hook");
 const _worker = require("../lib/worker");
 const _path = require("path");
@@ -574,7 +575,7 @@ async function exportAppImpl(dir, options, span) {
                     recursive: true
                 });
                 console.log(`Copying ${handlerSrc} -> ${handlerDest}`);
-                await _fs.promises.cp(handlerSrc, handlerDest, {
+                (0, _nodefs.cpSync)(handlerSrc, handlerDest, {
                     dereference: true
                 });
                 return;
@@ -591,11 +592,11 @@ async function exportAppImpl(dir, options, span) {
             const htmlSrc = `${orig}.html`;
             const jsonSrc = `${orig}${isAppPath ? _constants.RSC_SUFFIX : ".json"}`;
             console.log(`Copying ${htmlSrc} -> ${htmlDest}`);
-            await _fs.promises.cp(htmlSrc, htmlDest, {
+            (0, _nodefs.cpSync)(htmlSrc, htmlDest, {
                 dereference: true
             });
             console.log(`Copying ${jsonSrc} -> ${jsonDest}`);
-            await _fs.promises.cp(jsonSrc, jsonDest, {
+            (0, _nodefs.cpSync)(jsonSrc, jsonDest, {
                 dereference: true
             });
             if ((0, _fs.existsSync)(`${orig}.amp.html`)) {
@@ -603,7 +604,7 @@ async function exportAppImpl(dir, options, span) {
                     recursive: true
                 });
                 console.log(`Copying ${orig}.amp.html -> ${ampHtmlDest}`);
-                await _fs.promises.cp(`${orig}.amp.html`, ampHtmlDest, {
+                (0, _nodefs.cpSync)(`${orig}.amp.html`, ampHtmlDest, {
                     dereference: true
                 });
             }

@@ -10,6 +10,7 @@ import type { PagesManifest } from '../build/webpack/plugins/pages-manifest-plug
 import { bold, yellow } from '../lib/picocolors'
 import findUp from 'next/dist/compiled/find-up'
 import { existsSync, promises as fs } from 'fs'
+import { cpSync } from 'node:fs'
 
 import '../server/require-hook'
 
@@ -755,7 +756,7 @@ export async function exportAppImpl(
         if (isAppRouteHandler && existsSync(handlerSrc)) {
           await fs.mkdir(dirname(handlerDest), { recursive: true })
           console.log(`Copying ${handlerSrc} -> ${handlerDest}`)
-          await fs.cp(handlerSrc, handlerDest, { dereference: true })
+          cpSync(handlerSrc, handlerDest, { dereference: true })
           return
         }
 
@@ -785,14 +786,14 @@ export async function exportAppImpl(
         const jsonSrc = `${orig}${isAppPath ? RSC_SUFFIX : '.json'}`
 
         console.log(`Copying ${htmlSrc} -> ${htmlDest}`)
-        await fs.cp(htmlSrc, htmlDest, { dereference: true })
+        cpSync(htmlSrc, htmlDest, { dereference: true })
         console.log(`Copying ${jsonSrc} -> ${jsonDest}`)
-        await fs.cp(jsonSrc, jsonDest, { dereference: true })
+        cpSync(jsonSrc, jsonDest, { dereference: true })
 
         if (existsSync(`${orig}.amp.html`)) {
           await fs.mkdir(dirname(ampHtmlDest), { recursive: true })
           console.log(`Copying ${orig}.amp.html -> ${ampHtmlDest}`)
-          await fs.cp(`${orig}.amp.html`, ampHtmlDest, { dereference: true })
+          cpSync(`${orig}.amp.html`, ampHtmlDest, { dereference: true })
         }
       })
     )

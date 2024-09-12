@@ -14,6 +14,7 @@ const _picocolors = require("../lib/picocolors");
 const _crypto = /*#__PURE__*/ _interop_require_default(require("crypto"));
 const _picomatch = require("next/dist/compiled/picomatch");
 const _fs = require("fs");
+const _nodefs = require("node:fs");
 const _os = /*#__PURE__*/ _interop_require_default(require("os"));
 const _worker = require("../lib/worker");
 const _configshared = require("../server/config-shared");
@@ -230,7 +231,7 @@ async function writeStandaloneDirectory(nextBuildSpan, distDir, pageKeys, denorm
                 recursive: true
             });
             console.log(`Copying ${filePath} -> ${outputPath}`);
-            await _fs.promises.cp(filePath, outputPath, {
+            (0, _nodefs.cpSync)(filePath, outputPath, {
                 dereference: true
             });
         }
@@ -1894,7 +1895,7 @@ async function build(dir, reactProductionProfiling = false, debugOutput = false,
                             const updatedRelativeDest = _path.default.join("pages", "404.html").replace(/\\/g, "/");
                             if ((0, _fs.existsSync)(orig)) {
                                 console.log(`Copying ${orig} -> ${_path.default.join(distDir, "server", updatedRelativeDest)}`);
-                                await _fs.promises.cp(orig, _path.default.join(distDir, "server", updatedRelativeDest), {
+                                (0, _nodefs.cpSync)(orig, _path.default.join(distDir, "server", updatedRelativeDest), {
                                     dereference: true
                                 });
                                 pagesManifest["/404"] = updatedRelativeDest;

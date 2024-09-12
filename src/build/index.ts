@@ -13,6 +13,7 @@ import { bold, yellow } from '../lib/picocolors'
 import crypto from 'crypto'
 import { makeRe } from 'next/dist/compiled/picomatch'
 import { existsSync, promises as fs } from 'fs'
+import { cpSync } from 'node:fs'
 import os from 'os'
 import { Worker } from '../lib/worker'
 import { defaultConfig } from '../server/config-shared'
@@ -477,7 +478,7 @@ async function writeStandaloneDirectory(
           recursive: true,
         })
         console.log(`Copying ${filePath} -> ${outputPath}`)
-        await fs.cp(filePath, outputPath, { dereference: true })
+        cpSync(filePath, outputPath, { dereference: true })
       }
       await recursiveCopy(
         path.join(distDir, SERVER_DIRECTORY, 'pages'),
@@ -3031,7 +3032,7 @@ export default async function build(
                       updatedRelativeDest
                     )}`
                   )
-                  await fs.cp(
+                  cpSync(
                     orig,
                     path.join(distDir, 'server', updatedRelativeDest),
                     { dereference: true }

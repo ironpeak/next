@@ -4,6 +4,7 @@ import { bold, yellow } from "../lib/picocolors";
 import crypto from "crypto";
 import { makeRe } from "next/dist/compiled/picomatch";
 import { existsSync, promises as fs } from "fs";
+import { cpSync } from "node:fs";
 import os from "os";
 import { Worker } from "../lib/worker";
 import { defaultConfig } from "../server/config-shared";
@@ -174,7 +175,7 @@ async function writeStandaloneDirectory(nextBuildSpan, distDir, pageKeys, denorm
                 recursive: true
             });
             console.log(`Copying ${filePath} -> ${outputPath}`);
-            await fs.cp(filePath, outputPath, {
+            cpSync(filePath, outputPath, {
                 dereference: true
             });
         }
@@ -1838,7 +1839,7 @@ export default async function build(dir, reactProductionProfiling = false, debug
                             const updatedRelativeDest = path.join("pages", "404.html").replace(/\\/g, "/");
                             if (existsSync(orig)) {
                                 console.log(`Copying ${orig} -> ${path.join(distDir, "server", updatedRelativeDest)}`);
-                                await fs.cp(orig, path.join(distDir, "server", updatedRelativeDest), {
+                                cpSync(orig, path.join(distDir, "server", updatedRelativeDest), {
                                     dereference: true
                                 });
                                 pagesManifest["/404"] = updatedRelativeDest;

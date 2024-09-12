@@ -6,6 +6,7 @@ const fs = require('fs/promises')
 // eslint-disable-next-line import/no-extraneous-dependencies
 const resolveFrom = require('resolve-from')
 const execa = require('execa')
+const { cpSync } = require('node:fs')
 
 export async function next__polyfill_nomodule(task, opts) {
   await task
@@ -351,12 +352,12 @@ export async function ncc_edge_runtime_cookies() {
     license: pkg.license,
   })
 
-  await fs.cp(
+  cpSync(
     require.resolve('@edge-runtime/cookies/dist/index.js'),
     join(dest, 'index.js'),
     { dereference: true }
   )
-  await fs.cp(
+  cpSync(
     require.resolve('@edge-runtime/cookies/dist/index.d.ts'),
     join(dest, 'index.d.ts'),
     { dereference: true }
@@ -381,13 +382,13 @@ export async function ncc_edge_runtime_primitives() {
   await rmrf(dest)
 
   for (const file of await fs.readdir(join(primitivesPath, 'types'))) {
-    await fs.cp(join(primitivesPath, 'types', file), join(dest, file), {
+    cpSync(join(primitivesPath, 'types', file), join(dest, file), {
       dereference: true,
     })
   }
 
   for (const file of await fs.readdir(join(primitivesPath, 'dist'))) {
-    await fs.cp(join(primitivesPath, 'dist', file), join(dest, file), {
+    cpSync(join(primitivesPath, 'dist', file), join(dest, file), {
       dereference: true,
     })
   }
@@ -398,12 +399,12 @@ export async function ncc_edge_runtime_primitives() {
     main: './index.js',
     license: pkg.license,
   })
-  await fs.cp(
+  cpSync(
     require.resolve('@edge-runtime/primitives'),
     join(dest, 'index.js'),
     { dereference: true }
   )
-  await fs.cp(
+  cpSync(
     require.resolve('@edge-runtime/primitives/types/index.d.ts'),
     join(dest, 'index.d.ts'),
     { dereference: true }
@@ -427,7 +428,7 @@ export async function ncc_edge_runtime_ponyfill(task, opts) {
       `require(${JSON.stringify(externals['@edge-runtime/primitives'])})`
     )
   )
-  await fs.cp(
+  cpSync(
     require.resolve('@edge-runtime/ponyfill/src/index.d.ts'),
     join(dest, 'index.d.ts'),
     { dereference: true }
@@ -498,7 +499,7 @@ export async function ncc_next_font(task, opts) {
   for (const file of files) {
     const outputFile = join(destDir, file)
     await fs.mkdir(dirname(outputFile), { recursive: true })
-    await fs.cp(join(srcDir, file), outputFile, { dereference: true })
+    cpSync(join(srcDir, file), outputFile, { dereference: true })
   }
 
   await writeJson(join(destDir, 'package.json'), {
@@ -575,7 +576,7 @@ export async function ncc_jest_worker(task, opts) {
 // eslint-disable-next-line camelcase
 export async function ncc_react_refresh_utils(task, opts) {
   await rmrf(join(__dirname, 'dist/compiled/react-refresh'))
-  await fs.cp(
+  cpSync(
     dirname(require.resolve('react-refresh/package.json')),
     join(__dirname, 'dist/compiled/react-refresh'),
     { dereference: true, recursive: true, force: true }

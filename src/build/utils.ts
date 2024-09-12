@@ -41,6 +41,7 @@ import getGzipSize from 'next/dist/compiled/gzip-size'
 import textTable from 'next/dist/compiled/text-table'
 import path from 'path'
 import { promises as fs } from 'fs'
+import { cpSync } from 'node:fs'
 import { isValidElementType } from 'next/dist/compiled/react-is'
 import stripAnsi from 'next/dist/compiled/strip-ansi'
 import browserslist from 'next/dist/compiled/browserslist'
@@ -1982,7 +1983,7 @@ export async function copyTracedFiles(
             }
           } else {
             console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`)
-            await fs.cp(tracedFilePath, fileOutputPath, { dereference: true })
+            cpSync(tracedFilePath, fileOutputPath, { dereference: true })
           }
         }
 
@@ -2001,7 +2002,7 @@ export async function copyTracedFiles(
       )
       await fs.mkdir(path.dirname(fileOutputPath), { recursive: true })
       console.log(`Copying ${originalPath} -> ${fileOutputPath}`)
-      await fs.cp(originalPath, fileOutputPath, { dereference: true })
+      cpSync(originalPath, fileOutputPath, { dereference: true })
     }
     await Promise.all([
       page.files.map(handleFile),

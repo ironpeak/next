@@ -148,6 +148,7 @@ const _gzipsize = /*#__PURE__*/ _interop_require_default(require("next/dist/comp
 const _texttable = /*#__PURE__*/ _interop_require_default(require("next/dist/compiled/text-table"));
 const _path = /*#__PURE__*/ _interop_require_default(require("path"));
 const _fs = require("fs");
+const _nodefs = require("node:fs");
 const _reactis = require("next/dist/compiled/react-is");
 const _stripansi = /*#__PURE__*/ _interop_require_default(require("next/dist/compiled/strip-ansi"));
 const _browserslist = /*#__PURE__*/ _interop_require_default(require("next/dist/compiled/browserslist"));
@@ -1405,7 +1406,7 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                     }
                 } else {
                     console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`);
-                    await _fs.promises.cp(tracedFilePath, fileOutputPath, {
+                    (0, _nodefs.cpSync)(tracedFilePath, fileOutputPath, {
                         dereference: true
                     });
                 }
@@ -1422,7 +1423,7 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                 recursive: true
             });
             console.log(`Copying ${originalPath} -> ${fileOutputPath}`);
-            await _fs.promises.cp(originalPath, fileOutputPath, {
+            (0, _nodefs.cpSync)(originalPath, fileOutputPath, {
                 dereference: true
             });
         }
