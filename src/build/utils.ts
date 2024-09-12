@@ -1982,7 +1982,7 @@ export async function copyTracedFiles(
             }
           } else {
             console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`)
-            await fs.copyFile(tracedFilePath, fileOutputPath)
+            await fs.cp(tracedFilePath, fileOutputPath, { dereference: true })
           }
         }
 
@@ -2001,7 +2001,7 @@ export async function copyTracedFiles(
       )
       await fs.mkdir(path.dirname(fileOutputPath), { recursive: true })
       console.log(`Copying ${originalPath} -> ${fileOutputPath}`)
-      await fs.copyFile(originalPath, fileOutputPath)
+      await fs.cp(originalPath, fileOutputPath, { dereference: true })
     }
     await Promise.all([
       page.files.map(handleFile),

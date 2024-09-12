@@ -1405,7 +1405,9 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                     }
                 } else {
                     console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`);
-                    await _fs.promises.copyFile(tracedFilePath, fileOutputPath);
+                    await _fs.promises.cp(tracedFilePath, fileOutputPath, {
+                        dereference: true
+                    });
                 }
             }
             await copySema.release();
@@ -1420,7 +1422,9 @@ async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, tracingRoot,
                 recursive: true
             });
             console.log(`Copying ${originalPath} -> ${fileOutputPath}`);
-            await _fs.promises.copyFile(originalPath, fileOutputPath);
+            await _fs.promises.cp(originalPath, fileOutputPath, {
+                dereference: true
+            });
         }
         await Promise.all([
             page.files.map(handleFile),

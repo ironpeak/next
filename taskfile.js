@@ -353,11 +353,13 @@ export async function ncc_edge_runtime_cookies() {
 
   await fs.cp(
     require.resolve('@edge-runtime/cookies/dist/index.js'),
-    join(dest, 'index.js')
+    join(dest, 'index.js'),
+    { dereference: true }
   )
   await fs.cp(
     require.resolve('@edge-runtime/cookies/dist/index.d.ts'),
-    join(dest, 'index.d.ts')
+    join(dest, 'index.d.ts'),
+    { dereference: true }
   )
 }
 
@@ -379,11 +381,15 @@ export async function ncc_edge_runtime_primitives() {
   await rmrf(dest)
 
   for (const file of await fs.readdir(join(primitivesPath, 'types'))) {
-    await fs.cp(join(primitivesPath, 'types', file), join(dest, file))
+    await fs.cp(join(primitivesPath, 'types', file), join(dest, file), {
+      dereference: true,
+    })
   }
 
   for (const file of await fs.readdir(join(primitivesPath, 'dist'))) {
-    await fs.cp(join(primitivesPath, 'dist', file), join(dest, file))
+    await fs.cp(join(primitivesPath, 'dist', file), join(dest, file), {
+      dereference: true,
+    })
   }
 
   await writeJson(join(dest, 'package.json'), {
@@ -394,11 +400,13 @@ export async function ncc_edge_runtime_primitives() {
   })
   await fs.cp(
     require.resolve('@edge-runtime/primitives'),
-    join(dest, 'index.js')
+    join(dest, 'index.js'),
+    { dereference: true }
   )
   await fs.cp(
     require.resolve('@edge-runtime/primitives/types/index.d.ts'),
-    join(dest, 'index.d.ts')
+    join(dest, 'index.d.ts'),
+    { dereference: true }
   )
 }
 
@@ -421,7 +429,8 @@ export async function ncc_edge_runtime_ponyfill(task, opts) {
   )
   await fs.cp(
     require.resolve('@edge-runtime/ponyfill/src/index.d.ts'),
-    join(dest, 'index.d.ts')
+    join(dest, 'index.d.ts'),
+    { dereference: true }
   )
 
   const pkg = await readJson(
@@ -489,7 +498,7 @@ export async function ncc_next_font(task, opts) {
   for (const file of files) {
     const outputFile = join(destDir, file)
     await fs.mkdir(dirname(outputFile), { recursive: true })
-    await fs.cp(join(srcDir, file), outputFile)
+    await fs.cp(join(srcDir, file), outputFile, { dereference: true })
   }
 
   await writeJson(join(destDir, 'package.json'), {
@@ -569,7 +578,7 @@ export async function ncc_react_refresh_utils(task, opts) {
   await fs.cp(
     dirname(require.resolve('react-refresh/package.json')),
     join(__dirname, 'dist/compiled/react-refresh'),
-    { recursive: true, force: true }
+    { dereference: true, recursive: true, force: true }
   )
 
   const srcDir = join(

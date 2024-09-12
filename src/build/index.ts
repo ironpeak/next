@@ -477,7 +477,7 @@ async function writeStandaloneDirectory(
           recursive: true,
         })
         console.log(`Copying ${filePath} -> ${outputPath}`)
-        await fs.copyFile(filePath, outputPath)
+        await fs.cp(filePath, outputPath, { dereference: true })
       }
       await recursiveCopy(
         path.join(distDir, SERVER_DIRECTORY, 'pages'),
@@ -3024,10 +3024,17 @@ export default async function build(
                   .replace(/\\/g, '/')
 
                 if (existsSync(orig)) {
-                  console.log(`Copying ${orig} -> ${path.join(distDir, 'server', updatedRelativeDest)}`)
-                  await fs.copyFile(
+                  console.log(
+                    `Copying ${orig} -> ${path.join(
+                      distDir,
+                      'server',
+                      updatedRelativeDest
+                    )}`
+                  )
+                  await fs.cp(
                     orig,
-                    path.join(distDir, 'server', updatedRelativeDest)
+                    path.join(distDir, 'server', updatedRelativeDest),
+                    { dereference: true }
                   )
                   pagesManifest['/404'] = updatedRelativeDest
                 }

@@ -1222,7 +1222,9 @@ export async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, traci
                     }
                 } else {
                     console.log(`Copying ${tracedFilePath} -> ${fileOutputPath}`);
-                    await fs.copyFile(tracedFilePath, fileOutputPath);
+                    await fs.cp(tracedFilePath, fileOutputPath, {
+                        dereference: true
+                    });
                 }
             }
             await copySema.release();
@@ -1237,7 +1239,9 @@ export async function copyTracedFiles(dir, distDir, pageKeys, appPageKeys, traci
                 recursive: true
             });
             console.log(`Copying ${originalPath} -> ${fileOutputPath}`);
-            await fs.copyFile(originalPath, fileOutputPath);
+            await fs.cp(originalPath, fileOutputPath, {
+                dereference: true
+            });
         }
         await Promise.all([
             page.files.map(handleFile),

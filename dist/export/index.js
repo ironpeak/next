@@ -574,7 +574,9 @@ async function exportAppImpl(dir, options, span) {
                     recursive: true
                 });
                 console.log(`Copying ${handlerSrc} -> ${handlerDest}`);
-                await _fs.promises.copyFile(handlerSrc, handlerDest);
+                await _fs.promises.cp(handlerSrc, handlerDest, {
+                    dereference: true
+                });
                 return;
             }
             const htmlDest = (0, _path.join)(outDir, `${route}${subFolders && route !== "/index" ? `${_path.sep}index` : ""}.html`);
@@ -589,15 +591,21 @@ async function exportAppImpl(dir, options, span) {
             const htmlSrc = `${orig}.html`;
             const jsonSrc = `${orig}${isAppPath ? _constants.RSC_SUFFIX : ".json"}`;
             console.log(`Copying ${htmlSrc} -> ${htmlDest}`);
-            await _fs.promises.copyFile(htmlSrc, htmlDest);
+            await _fs.promises.cp(htmlSrc, htmlDest, {
+                dereference: true
+            });
             console.log(`Copying ${jsonSrc} -> ${jsonDest}`);
-            await _fs.promises.copyFile(jsonSrc, jsonDest);
+            await _fs.promises.cp(jsonSrc, jsonDest, {
+                dereference: true
+            });
             if ((0, _fs.existsSync)(`${orig}.amp.html`)) {
                 await _fs.promises.mkdir((0, _path.dirname)(ampHtmlDest), {
                     recursive: true
                 });
                 console.log(`Copying ${orig}.amp.html -> ${ampHtmlDest}`);
-                await _fs.promises.copyFile(`${orig}.amp.html`, ampHtmlDest);
+                await _fs.promises.cp(`${orig}.amp.html`, ampHtmlDest, {
+                    dereference: true
+                });
             }
         }));
     }
